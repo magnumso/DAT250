@@ -2,10 +2,10 @@
 
 ## 1. Purpose
 This repository contains a local-only lab web application for DAT250 Information and Software Security. It is designed for safe classroom use on your own machine.
-
+-
 ## 2. Required tools
 - Docker Desktop
-- Git
+- Git  
 - A web browser
 - VS Code (optional)
 
