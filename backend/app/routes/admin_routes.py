@@ -97,11 +97,18 @@ def search_users(request: Request, q: str = ""):
     if not user:
         return RedirectResponse("/login", status_code=302)
 
-    sql = f"SELECT id, email, full_name, role FROM users WHERE email ILIKE '%{q}%' OR full_name ILIKE '%{q}%'"
+    if user["role"] not in ["admin"]:
+        return RedirectResponse("/dashboard", status_code=302)
+
+    sql = "SELECT user_id FROM user_ WHERE username = %s"
+    row = query_one(sql, (username,))
+
+    # Passing 
+    sql = f"SELECT id, email, full_name, role FROM users WHERE email ILIKE %s OR full_name ILIKE %s"
     conn = get_conn()
     try:
         with conn.cursor() as cur:
-            cur.execute(sql)
+            cur.execute(sql, (q, q))
             rows = cur.fetchall()
             cols = [d[0] for d in cur.description]
             users = [dict(zip(cols, r)) for r in rows]
