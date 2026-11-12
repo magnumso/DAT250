@@ -1,4 +1,5 @@
 import time
+import secrets
 from fastapi import APIRouter, Request, Form
 from fastapi.responses import RedirectResponse, HTMLResponse
 from fastapi.templating import Jinja2Templates
@@ -86,7 +87,7 @@ def reset_password_request(request: Request, email: str = Form(...)):
             {"request": request, "mode": "request", "message": "No user found with that email."},
         )
 
-    token = str(int(time.time()))[-6:]
+    token = secrets.token_hex(16)
     run_query(
         "INSERT INTO password_reset_tokens (user_id, token) VALUES (%s, %s)",
         (user["id"], token),
